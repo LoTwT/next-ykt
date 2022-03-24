@@ -1,9 +1,8 @@
+import { IRecommendData } from 'pages/api/recommend'
 import { memo } from 'react'
 
 interface IProps {
-  data?: {
-    courseTitle: string
-  }
+  data: IRecommendData
 }
 
 const CourseCard = ({ data }: IProps) => {

@@ -1,9 +1,13 @@
-import SectionHeader from "./SectionHeader"
+import SectionHeader from './SectionHeader'
 
 const Talk = () => {
   return (
     <section>
-      <SectionHeader /> talk
+      <SectionHeader
+        title="今日公开课"
+        subTitle="Today's public class"
+        url=""
+      />
     </section>
   )
 }
