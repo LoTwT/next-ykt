@@ -1,12 +1,17 @@
+import { IHomeBanner } from 'pages/api/home'
 import Banner from './Banner'
 import Nav from './Nav'
 import SearchBar from './SearchBar'
 
-const HomeHead = () => {
+interface IProps {
+  banner: IHomeBanner[]
+}
+
+const HomeHead = ({ banner }: IProps) => {
   return (
     <section>
       <SearchBar />
-      <Banner />
+      <Banner data={banner} />
       <Nav />
     </section>
   )

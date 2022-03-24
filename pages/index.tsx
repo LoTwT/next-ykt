@@ -1,10 +1,15 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import HomeHead from '@/p_home/HomeHead'
 import Talk from '@/p_home/Talk'
 import Recommend from '@/p_home/Recommend'
+import { getHome } from 'core/api'
+import { Nullable } from 'types'
+import { IHomeResponse } from './api/home'
 
-const Home: NextPage = () => {
+const Home: NextPage<{ home: Nullable<IHomeResponse> }> = ({ home }) => {
+  const banner = home?.data.banner || []
+
   return (
     <div>
       <Head>
@@ -15,7 +20,7 @@ const Home: NextPage = () => {
         />
       </Head>
       <main>
-        <HomeHead />
+        <HomeHead banner={banner} />
         <Talk />
         <Recommend />
       </main>
@@ -24,3 +29,12 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const data = await getHome()
+    return { props: { home: data } }
+  } catch (error) {
+    return { props: { home: null } }
+  }
+}
