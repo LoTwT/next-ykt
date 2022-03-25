@@ -324,4 +324,10 @@ export interface IRecommendData {
   price: number
   // 开课时间
   courseTime: string
+  // 促销开始时间
+  saleStartTime?: number
+  // 促销结束时间
+  saleEndTime?: number
+  // 促销价格
+  salePrice?: number
 }

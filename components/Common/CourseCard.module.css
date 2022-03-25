@@ -60,3 +60,80 @@
 .lessonNum {
   margin-left: 0.2rem;
 }
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.22rem;
+}
+
+.teacherCont {
+  margin-left: 0.09rem;
+}
+
+.teacherBox {
+  display: inline-block;
+  margin-right: 0.36rem;
+  text-align: center;
+  max-width: 0.88rem;
+  overflow: hidden;
+}
+
+.teacherBox:last-child {
+  margin-right: 0;
+}
+
+.imgWrapper {
+  position: relative;
+  width: 0.48rem;
+  height: 0.48rem;
+  margin: 0 auto 0.09rem;
+}
+
+.avatar {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.avatarBorder {
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border: solid 1px rgba(0, 0, 0, 0.03);
+  border-radius: 50%;
+}
+
+.promoCont {
+  text-align: right;
+}
+
+.promoCont .price {
+  position: relative;
+  margin-left: 0.16rem;
+  font-size: 0.36rem;
+  font-weight: bold;
+  line-height: 1;
+  color: #ff773a;
+}
+
+.promoCont .price > .iso {
+  margin-right: 0.08rem;
+  font-size: 0.24rem;
+  font-weight: normal;
+  line-height: 1;
+}
+
+.promoCont .deleted {
+  font-size: 0.26rem;
+
+  /* 删除线 */
+  text-decoration: line-through;
+}
+
+.promoCont .desc {
+  margin-top: 0.17rem;
+}
