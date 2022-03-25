@@ -66,13 +66,14 @@ button {
   --main-bg-color: red;
 }
 
+/* 物理 1px */
 .border-b-1px,
 .border-t-1px,
 .border-all-1px {
   position: relative;
 }
 
-/* 四周1px */
+/* 四周 物理 1px */
 .border-all-1px::before {
   position: absolute;
   top: 0;
@@ -123,6 +124,7 @@ button {
   white-space: nowrap;
 }
 
+/* 媒体查询是否 2 倍屏 */
 @media (min-resolution: 2dppx) {
   .border-b-1px::after {
     transform: scaleY(0.5);

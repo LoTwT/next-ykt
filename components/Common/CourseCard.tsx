@@ -1,17 +1,19 @@
+import Link from 'next/link'
 import { IRecommendData } from 'pages/api/recommend'
 import { memo } from 'react'
+import styles from './CourseCard.module.css'
 
 interface IProps {
   data: IRecommendData
 }
 
 const CourseCard = ({ data }: IProps) => {
-  const { courseTitle = '' } = data || {}
+  const { courseTitle, id } = data
 
   return (
-    <div>
-      <p>{courseTitle}</p>
-    </div>
+    <Link href="/course/detail/id[]" as={`/course/detail/${id}`} passHref>
+      <a className={`${styles.card} border-b-1px`}>{courseTitle}</a>
+    </Link>
   )
 }
 
