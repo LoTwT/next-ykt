@@ -1,5 +1,5 @@
 import { GetServerSideProps, NextPage } from 'next'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import History from '@/p_search/History'
 import Suggest from '@/p_search/Suggest'
 import Result from '@/p_search/Result'
@@ -8,6 +8,8 @@ import { getHotWord, getSearchResult, getSearchSuggest } from 'core/api'
 import { IHotwordData } from 'pages/api/search/hotword'
 import { ISearchData } from 'pages/api/search/result'
 import { useRouter } from 'next/router'
+import { throttle } from 'lodash'
+import styles from './search.module.css'
 
 const TYPES = {
   HISTORY: 'history',
@@ -41,14 +43,19 @@ const Search: NextPage<ISearchProps> = ({ kw }) => {
   }
 
   // 搜索建议
-  const fetchSuggest = async (keyword: string) => {
-    // 切换内容类型为搜索建议
-    if (contType !== TYPES.SUGGEST) setContType(TYPES.SUGGEST)
-    // 请求数据
-    const res = await getSearchSuggest(keyword)
-    // 更新 state
-    setSuggestList(res.data)
-  }
+  const fetchSuggest = useMemo(
+    () =>
+      throttle(async (keyword: string) => {
+        console.log(1)
+        // 切换内容类型为搜索建议
+        if (contType !== TYPES.SUGGEST) setContType(TYPES.SUGGEST)
+        // 请求数据
+        const res = await getSearchSuggest(keyword)
+        // 更新 state
+        setSuggestList(res.data)
+      }, 500),
+    [contType, setContType, setSuggestList]
+  )
 
   const showHistory = () => setContType(TYPES.HISTORY)
 
@@ -75,7 +82,7 @@ const Search: NextPage<ISearchProps> = ({ kw }) => {
       />
 
       {/* 内容 */}
-      {renderContent()}
+      <div className={styles.content}>{renderContent()}</div>
     </div>
   )
 }
