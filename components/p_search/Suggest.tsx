@@ -1,4 +1,8 @@
-const Suggest = () => {
+interface IProps {
+  data: string[]
+}
+
+const Suggest = ({ data }: IProps) => {
   return <div>Suggest</div>
 }
 
