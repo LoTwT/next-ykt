@@ -74,7 +74,7 @@ const Search: NextPage<ISearchProps> = ({ kw, hotword }) => {
         deleteHistory={() => setHistory([])}
       />
     ),
-    [TYPES.SUGGEST]: <Suggest data={suggestList} />,
+    [TYPES.SUGGEST]: <Suggest data={suggestList} submitSearch={submitSearch} />,
     [TYPES.RESULT]: <Result />,
   }
 
