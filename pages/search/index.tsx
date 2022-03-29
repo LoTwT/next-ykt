@@ -10,6 +10,7 @@ import { ISearchData } from 'pages/api/search/result'
 import { useRouter } from 'next/router'
 import { throttle } from 'lodash'
 import styles from './search.module.css'
+import { useLSState } from 'core/hooks/useLSState'
 
 const TYPES = {
   HISTORY: 'history',
@@ -28,9 +29,14 @@ const Search: NextPage<ISearchProps> = ({ kw, hotword }) => {
   const [inputVal, setInputVal] = useState(kw || '')
   // 搜索建议
   const [suggestList, setSuggestList] = useState<string[]>([])
+  const [history, setHistory] = useLSState<string[]>('searchHistory', [])
 
   // 切换到搜索结果
   const submitSearch = (keyword: string) => {
+    // 保存去重搜索记录，最长保持 6 条，最近优先
+    history.unshift(keyword)
+    setHistory([...new Set(history.slice(0, 6))])
+
     // 切换为结果类型
     setContType(TYPES.RESULT)
     // 替换路由参数
@@ -60,7 +66,14 @@ const Search: NextPage<ISearchProps> = ({ kw, hotword }) => {
   const showHistory = () => setContType(TYPES.HISTORY)
 
   const map = {
-    [TYPES.HISTORY]: <History submitSearch={submitSearch} hotword={hotword} />,
+    [TYPES.HISTORY]: (
+      <History
+        submitSearch={submitSearch}
+        hotword={hotword}
+        history={history}
+        deleteHistory={() => setHistory([])}
+      />
+    ),
     [TYPES.SUGGEST]: <Suggest data={suggestList} />,
     [TYPES.RESULT]: <Result />,
   }

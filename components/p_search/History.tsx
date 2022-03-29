@@ -1,13 +1,16 @@
 import Link from 'next/link'
 import { IHotwordData } from 'pages/api/search/hotword'
 import styles from './History.module.css'
+import Image from 'next/image'
 
 interface IProps {
   hotword: IHotwordData[]
+  history: string[]
+  deleteHistory: () => void
   submitSearch: (keyword: string) => void
 }
 
-const History = ({ hotword, submitSearch }: IProps) => {
+const History = ({ hotword, history, deleteHistory, submitSearch }: IProps) => {
   const renderHotItem = (item: IHotwordData, idx: number) => {
     // type = 1 词汇
     // type = 2 课程详情页面
@@ -48,6 +51,32 @@ const History = ({ hotword, submitSearch }: IProps) => {
       ) : null}
 
       {/* 搜索历史 */}
+      <section className={styles.container}>
+        <div className={`${styles.historyHead} border-b-1px`}>
+          搜索历史
+          <button className={styles.del} onClick={() => deleteHistory()}>
+            <Image
+              className={styles.clean}
+              src="/img/clean.png"
+              alt="clean"
+              layout="fill"
+            />
+          </button>
+        </div>
+        <div className={styles.content}>
+          {history && history.length
+            ? history.map((item, idx) => (
+                <div
+                  className={`${styles.list} border-b-1px`}
+                  key={`history-item-${idx}`}
+                  onClick={() => submitSearch(item)}
+                >
+                  {item}
+                </div>
+              ))
+            : null}
+        </div>
+      </section>
     </>
   )
 }
