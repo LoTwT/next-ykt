@@ -1,9 +1,27 @@
 import { PureComponent, ReactNode } from 'react'
 import { Nullable } from 'types'
+import styles from './LoadMore.module.css'
+
+function renderCont(
+  isLoadingMore: boolean,
+  hasMore: boolean,
+  customNoMoreText?: string
+) {
+  if (isLoadingMore) {
+    return <div>正在加载...</div>
+  }
+
+  return hasMore ? (
+    <div className={styles.loadText} />
+  ) : (
+    <div className={styles.loadText}>{customNoMoreText || '没有更多了'}</div>
+  )
+}
 
 interface IProps {
   onReachBottom: () => Promise<void>
   hasMore: boolean
+  customNoMoreText?: string
 }
 
 interface IState {
@@ -52,7 +70,13 @@ class LoadMore extends PureComponent<IProps, IState> {
   }
 
   render(): ReactNode {
-    return <div>加载更多</div>
+    const { hasMore, customNoMoreText } = this.props
+    const { isLoadingMore } = this.state
+    return (
+      <div className={styles.loadMore}>
+        {renderCont(isLoadingMore, hasMore, customNoMoreText)}
+      </div>
+    )
   }
 }
 

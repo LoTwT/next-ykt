@@ -1,5 +1,5 @@
 import { GetServerSideProps, NextPage } from 'next'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import History from '@/p_search/History'
 import Suggest from '@/p_search/Suggest'
 import Result from '@/p_search/Result'
@@ -18,7 +18,7 @@ const TYPES = {
   RESULT: 'result',
 } as const
 
-const Search: NextPage<ISearchProps> = ({ kw, hotword }) => {
+const Search: NextPage<ISearchProps> = ({ kw, hotword, result }) => {
   const router = useRouter()
 
   // 内容类型
@@ -30,6 +30,7 @@ const Search: NextPage<ISearchProps> = ({ kw, hotword }) => {
   // 搜索建议
   const [suggestList, setSuggestList] = useState<string[]>([])
   const [history, setHistory] = useLSState<string[]>('searchHistory', [])
+  const [loading, setLoading] = useState(false)
 
   // 切换到搜索结果
   const submitSearch = (keyword: string) => {
@@ -39,6 +40,11 @@ const Search: NextPage<ISearchProps> = ({ kw, hotword }) => {
 
     // 切换为结果类型
     setContType(TYPES.RESULT)
+    setInputVal(keyword)
+
+    // 加载中
+    setLoading(true)
+
     // 替换路由参数
     router.replace({
       pathname: '/search',
@@ -52,7 +58,6 @@ const Search: NextPage<ISearchProps> = ({ kw, hotword }) => {
   const fetchSuggest = useMemo(
     () =>
       throttle(async (keyword: string) => {
-        console.log(1)
         // 切换内容类型为搜索建议
         if (contType !== TYPES.SUGGEST) setContType(TYPES.SUGGEST)
         // 请求数据
@@ -75,13 +80,19 @@ const Search: NextPage<ISearchProps> = ({ kw, hotword }) => {
       />
     ),
     [TYPES.SUGGEST]: <Suggest data={suggestList} submitSearch={submitSearch} />,
-    [TYPES.RESULT]: <Result />,
+    [TYPES.RESULT]: <Result data={result} kw={kw} />,
   }
 
   // 渲染内容
   const renderContent = () => {
+    if (loading) return <div className={styles.loading}>加载中...</div>
+
     return map[contType]
   }
+
+  useEffect(() => {
+    setLoading(false)
+  }, [result])
 
   return (
     <div>

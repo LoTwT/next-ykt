@@ -6,7 +6,7 @@ const resultApi = (
   res: NextApiResponse<ISearchResultResponse>
 ) => {
   const { query } = req
-  const { kw = '', start: _start, offset: _offset } = query
+  const { kw = '', start: _start, offset: _offset = 10 } = query
 
   const start = Number(_start || 0)
   const offset = Number(_offset || 0)
@@ -302,6 +302,7 @@ const resultApi = (
           return item
         })
       : mockData.slice(0, offset)
+  console.log(resData, start, offset, _start, _offset)
   res.statusCode = 200
   res.json({
     code: '0',
