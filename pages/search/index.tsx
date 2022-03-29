@@ -17,7 +17,7 @@ const TYPES = {
   RESULT: 'result',
 } as const
 
-const Search: NextPage<ISearchProps> = ({ kw }) => {
+const Search: NextPage<ISearchProps> = ({ kw, hotword }) => {
   const router = useRouter()
 
   // 内容类型
@@ -60,7 +60,7 @@ const Search: NextPage<ISearchProps> = ({ kw }) => {
   const showHistory = () => setContType(TYPES.HISTORY)
 
   const map = {
-    [TYPES.HISTORY]: <History submitSearch={submitSearch} />,
+    [TYPES.HISTORY]: <History submitSearch={submitSearch} hotword={hotword} />,
     [TYPES.SUGGEST]: <Suggest data={suggestList} />,
     [TYPES.RESULT]: <Result />,
   }
